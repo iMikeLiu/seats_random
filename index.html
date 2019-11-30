@@ -1,0 +1,90 @@
+<html>
+<head>
+	<style>
+		#ml_main
+		{
+			text-align:center;
+		}
+        table
+        {
+            border-collapse: collapse;
+            margin: 0 auto;
+            text-align: center;
+        }
+        table td, table th
+        {
+            border: 1px solid #cad9ea;
+            color: #666;
+            height: 30px;
+        }
+        table thead th
+        {
+            background-color: #CCE8EB;
+            width: 100px;
+        }
+        table tr:nth-child(odd)
+        {
+            background: #fff;
+        }
+        table tr:nth-child(even)
+        {
+            background: #F5FAFA;
+        }
+	</style>
+	<script>
+	var ml_global={};
+	ml_global.students=[];
+	ml_global.seats=[];
+	ml_global.row=0;
+	ml_global.line=0;
+	function ml_creatTable(data)
+	{
+		var tableData="";
+		for(var i=0;i<data.length;i++)
+		{
+			tableData+="<tr>";
+			for(var j=0;j<data[i].length;j++)
+				tableData+="<td>"+data[i][j]+"</td>";
+			tableData+="</tr>"
+		}
+
+		return tableData;
+	}
+	function ml_addName_oc()
+	{
+		ml_global.students.push(ml_fromName.value);
+		ml_json.innerHTML=JSON.stringify(ml_global.students);
+	}
+	function ml_inputJSON_oc()
+	{
+		ml_global.students=JSON.parse(ml_fromJSON.value);
+		ml_json.innerHTML=JSON.stringify(ml_global.students);
+	}
+	</script>
+</head>
+<body>
+<title>位置安排系统</title>
+<div id="ml_main">
+	<span>从姓名添加学生</span>
+	<input id="ml_fromName"/>
+	<button id="ml_addName" onclick="ml_addName_oc()">添加</button>
+	<br/>
+	<span>从JSON添加学生</span>
+	<textarea id="ml_fromJSON"></textarea>
+	<button id="ml_inputJSON" onclick="ml_inputJSON_oc()">导入</button>
+	<br/>
+</div>
+<div id="ml_conditionDiv">
+	<span>情况</span>
+</div>
+<div id="ml_jsonDiv">
+	<span>json数据</span>
+	<div id="ml_json">[]</div>
+</div>
+<table id="ml_data">
+</table>
+<script>
+	ml_data.innerHTML=ml_creatTable([["test2"],["test3","test4"]])
+</script>
+</body>
+</html>
