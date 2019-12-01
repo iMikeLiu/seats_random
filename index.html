@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <html>
 <head>
 	<style>
@@ -41,6 +42,19 @@
         }
 	</style>
 	<script>
+	function ml_randomNum(minNum,maxNum){ 
+    switch(arguments.length){ 
+        case 1: 
+            return parseInt(Math.random()*minNum+1,10); 
+        break; 
+        case 2: 
+            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
+        break; 
+        default: 
+            return 0; 
+        break; 
+		} 
+	} 
 	function Ml_Conditon(id,student1,student2,isNeighbor)
 	{
 		this.condition=["上","下","左","右"];
@@ -52,6 +66,7 @@
 	}
 	var ml_global={};
 	ml_global.students=[];
+	ml_global.visited={};
 	ml_global.seats=[];
 	ml_global.row=0;
 	ml_global.line=0;
@@ -168,10 +183,40 @@
 		ml_global.condition.push(new Ml_Conditon(ml_conditionNot.value,ml_optionNot1.value,ml_optionNot2.value,0));
 		ml_conditionJson.innerHTML=JSON.stringify(ml_global.condition)
 	}
+	function ml_importJSON_oc()
+	{
+		if(JSON.parse(ml_conditionJSON.value) instanceof Array)
+		{
+			ml_global.condition=JSON.parse(ml_conditionJSON.value);
+			ml_conditionJson.innerHTML=JSON.stringify(ml_global.condition);
+			ml_update();
+		}
+		else
+		{
+			alert("非法的JSON格式！");
+		}
+	}
+	function ml_generate_oc()
+	{
+		ml_set_oc();
+		for (var i=0;i<ml_global.students.length;i++)
+		{
+			var x=ml_randomNum(0,ml_global.line-1);
+			var y=ml_randomNum(0,ml_global.row-1);
+			while(!(ml_global.seats[x][y]==="空位置"))
+			{
+				x=ml_randomNum(0,ml_global.line-1);
+				y=ml_randomNum(0,ml_global.row-1);
+			}
+			ml_global.seats[x][y]=ml_global.students[i];
+		}
+		document.getElementById("ml_data").innerHTML=ml_creatTable(ml_global.seats);
+	}
 	</script>
+	<title>位置安排系统</title>
 </head>
 <body>
-<title>位置安排系统</title>
+
 <div id="ml_main">
 	<span>从姓名添加学生</span>
 	<input id="ml_fromName"/>
@@ -179,7 +224,11 @@
 	<br/>
 	<span>从JSON添加学生</span>
 	<textarea id="ml_fromJSON"></textarea>
-	<button id="ml_inputJSON" onclick="ml_inputJSON_oc()">导入</button>
+	<button id="ml_importJSON" onclick="ml_inputJSON_oc()">导入</button>
+	<br/>
+	<span>从JSON设置限制条件</span>
+	<textarea id="ml_conditionJSON"></textarea>
+	<button id="ml_importJSON" onclick="ml_importJSON_oc()">导入</button>
 	<br/>
 </div>
 <div id="ml_conditionDiv">
@@ -220,17 +269,21 @@
 	<input id="ml_row"/>
 	<button onclick="ml_set_oc()">设置</button>
 </div>
-<button onclick='(function ml_displayJson(){ml_json.style=""})()'>显示JSON数据</button>
-<button onclick='(function ml_displayJson(){ml_json.style="display:none"})()'>隐藏JSON数据</button>
+<button id="displayJson" onclick='(function ml_displayJson_oc(){ml_json.style=""})()'>显示JSON数据</button>
+<button id="hideJson" onclick='(function ml_hideJson_oc(){ml_json.style="display:none"})()'>隐藏JSON数据</button>
 <div id="ml_json" style="display:none">
-<div id="ml_jsonDiv">
-	<span>学生json数据</span>
-	<div id="ml_studentJson">[]</div>
+	<div id="ml_jsonDiv">
+		<span>学生json数据</span>
+		<div id="ml_studentJson">[]</div>
+	</div>
+	<div id="ml_jsonDiv">
+		<span>条件json数据</span>
+		<div id="ml_conditionJson">{}</div>
+	</div>
 </div>
-<div id="ml_jsonDiv">
-	<span>条件json数据</span>
-	<div id="ml_conditionJson">{}</div>
-</div>
+<div id="ml_generate">
+	<button id="ml_buttonGenerate" onclick="ml_generate_oc()">随机生成</button>
+	<button id="ml_condGenerate" onclick="ml_condGenerate_oc()">按条件生成</button>
 </div>
 <table id="ml_data">
 </table>
