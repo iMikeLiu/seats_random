@@ -5,6 +5,15 @@
 		{
 			text-align:center;
 		}
+		#ml_seatsDiv
+		{
+			text-align:center;
+		}
+		#ml_conditionDiv
+		{
+			text-align:center;
+		}
+
         table
         {
             border-collapse: collapse;
@@ -50,15 +59,58 @@
 
 		return tableData;
 	}
+	function ml_creatOption(data,id,name)
+	{
+		var tableData='<select id="'+id+'" name="'+name+'">';
+		for(var i=0;i<data.length;i++)
+		{
+			tableData+="<option value="+'"'+i+'"'+">";
+			tableData+=data[i];
+			tableData+="</option>";
+		}
+		tableData+="</select>";
+		return tableData;
+	}
+	function ml_update()
+	{
+		document.getElementById("ml_must1").innerHTML=ml_creatOption(ml_global.students,"ml_option","ml_mustFirst");
+		document.getElementById("ml_must2").innerHTML=ml_creatOption(ml_global.students,"ml_option","ml_mustSecond");
+		document.getElementById("ml_not1").innerHTML=ml_creatOption(ml_global.students,"ml_option","ml_notFirst");
+		document.getElementById("ml_not2").innerHTML=ml_creatOption(ml_global.students,"ml_option","ml_notFirst");
+	}
 	function ml_addName_oc()
 	{
 		ml_global.students.push(ml_fromName.value);
 		ml_json.innerHTML=JSON.stringify(ml_global.students);
+		ml_update();
 	}
 	function ml_inputJSON_oc()
 	{
-		ml_global.students=JSON.parse(ml_fromJSON.value);
-		ml_json.innerHTML=JSON.stringify(ml_global.students);
+		if(JSON.parse(ml_fromJSON.value) instanceof Array)
+		{
+			ml_global.students=JSON.parse(ml_fromJSON.value);
+			ml_json.innerHTML=JSON.stringify(ml_global.students);
+			ml_update();
+		}
+		else
+		{
+			alert("非法的JSON格式！");
+		}
+	}
+	function ml_set_oc()
+	{
+		ml_global.row=document.getElementById("ml_row").value;
+		ml_global.line=document.getElementById("ml_line").value;
+		ml_global.seats=[];
+		for (var i=0;i<ml_global.line;i++)
+		{
+			ml_global.seats.push([]);
+			for (var j=0;j<ml_global.row;j++)
+			{
+				ml_global.seats[i].push("空位置");
+			}
+		}
+		document.getElementById("ml_data").innerHTML=ml_creatTable(ml_global.seats);
 	}
 	</script>
 </head>
@@ -75,11 +127,40 @@
 	<br/>
 </div>
 <div id="ml_conditionDiv">
-	<span>条件</span>
+	<span>必须满足的相邻条件</span>
+	<select id="ml_condition" name="condition">
+           <option>-请选择条件-</option>
+           <option value="1">上</option>
+           <option value="2">下</option>
+           <option value="3">左</option>
+		   <option value="4">右</option>
+    </select>
+	<span>学生1</span>
+	<div id="ml_must1"></div>
+	<span>学生2</span>
+	<div id="ml_must2"></div>
+</div>
+<div id="ml_conditionDiv">
+	<span>必须满足的不相邻条件</span>
+	<select id="ml_condition" name="condition">
+           <option>-请选择条件-</option>
+           <option value="1">上</option>
+           <option value="2">下</option>
+           <option value="3">左</option>
+		   <option value="4">右</option>
+    </select>
+	<span>学生1</span>
+	<div id="ml_not1"></div>
+	<span>学生2</span>
+	<div id="ml_not2"></div>
 </div>
 <div id="ml_seatsDiv">
 	<span>桌椅排列</span>
-        
+    <span>行数</span>
+	<input id="ml_line"/>
+	<span>列数</span>
+	<input id="ml_row"/>
+	<button onclick="ml_set_oc()">设置</button>
 </div>
 <div id="ml_jsonDiv">
 	<span>json数据</span>
@@ -87,8 +168,6 @@
 </div>
 <table id="ml_data">
 </table>
-<script>
-	ml_data.innerHTML=ml_creatTable([["test2"],["test3","test4"]])
-</script>
+
 </body>
 </html>
