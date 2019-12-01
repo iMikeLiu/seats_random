@@ -41,11 +41,21 @@
         }
 	</style>
 	<script>
+	function Ml_Conditon(id,student1,student2,isNeighbor)
+	{
+		this.condition=["上","下","左","右"];
+		this.conditionId=id;
+		this.student1=student1;
+		this.student2=student2;
+		this.isNeighbor=isNeighbor;
+		return this;
+	}
 	var ml_global={};
 	ml_global.students=[];
 	ml_global.seats=[];
 	ml_global.row=0;
 	ml_global.line=0;
+	ml_global.condition=[];
 	function ml_creatTable(data)
 	{
 		var tableData="";
@@ -73,15 +83,15 @@
 	}
 	function ml_update()
 	{
-		document.getElementById("ml_must1").innerHTML=ml_creatOption(ml_global.students,"ml_option","ml_mustFirst");
-		document.getElementById("ml_must2").innerHTML=ml_creatOption(ml_global.students,"ml_option","ml_mustSecond");
-		document.getElementById("ml_not1").innerHTML=ml_creatOption(ml_global.students,"ml_option","ml_notFirst");
-		document.getElementById("ml_not2").innerHTML=ml_creatOption(ml_global.students,"ml_option","ml_notFirst");
+		document.getElementById("ml_must1").innerHTML=ml_creatOption(ml_global.students,"ml_optionMust1","ml_mustFirst");
+		document.getElementById("ml_must2").innerHTML=ml_creatOption(ml_global.students,"ml_optionMust2","ml_mustSecond");
+		document.getElementById("ml_not1").innerHTML=ml_creatOption(ml_global.students,"ml_optionNot1","ml_notFirst");
+		document.getElementById("ml_not2").innerHTML=ml_creatOption(ml_global.students,"ml_optionNot2","ml_notFirst");
 	}
 	function ml_addName_oc()
 	{
 		ml_global.students.push(ml_fromName.value);
-		ml_json.innerHTML=JSON.stringify(ml_global.students);
+		ml_studentJson.innerHTML=JSON.stringify(ml_global.students);
 		ml_update();
 	}
 	function ml_inputJSON_oc()
@@ -89,7 +99,7 @@
 		if(JSON.parse(ml_fromJSON.value) instanceof Array)
 		{
 			ml_global.students=JSON.parse(ml_fromJSON.value);
-			ml_json.innerHTML=JSON.stringify(ml_global.students);
+			ml_studentJson.innerHTML=JSON.stringify(ml_global.students);
 			ml_update();
 		}
 		else
@@ -112,6 +122,52 @@
 		}
 		document.getElementById("ml_data").innerHTML=ml_creatTable(ml_global.seats);
 	}
+	function ml_setmust_oc()
+	{
+		if(ml_conditionMust.value==="-请选择条件-")
+		{
+			alert("请选择条件！");
+			return;
+		}
+		if(ml_optionMust1.value===ml_optionMust2.value)
+		{
+			alert("条件不正确！");
+			return;
+		}
+		for(var i=0;i<ml_global.condition.length;i++)
+		{
+			if((ml_global.condition[i].student1===ml_optionMust1.value&&ml_global.condition[i].student2===ml_optionMust2.value)||(ml_global.condition[i].student2===ml_optionMust1.value&&ml_global.condition[i].student1===ml_optionMust2.value))
+			{
+				alert("已存在条件！");
+				return;
+			}
+		}
+		ml_global.condition.push(new Ml_Conditon(ml_conditionMust.value,ml_optionMust1.value,ml_optionMust2.value,1));
+		ml_conditionJson.innerHTML=JSON.stringify(ml_global.condition)
+	}
+	function ml_setnot_oc()
+	{
+		if(ml_conditionNot.value==="-请选择条件-")
+		{
+			alert("请选择条件！");
+			return;
+		}
+		if(ml_optionNot1.value===ml_optionNot2.value)
+		{
+			alert("条件不正确！");
+			return;
+		}
+		for(var i=0;i<ml_global.condition.length;i++)
+		{
+			if((ml_global.condition[i].student1===ml_optionNot1.value&&ml_global.condition[i].student2===ml_optionNot2.value)||(ml_global.condition[i].student2===ml_optionNot1.value&&ml_global.condition[i].student1===ml_optionNot2.value))
+			{
+				alert("已存在条件！");
+				return;
+			}
+		}
+		ml_global.condition.push(new Ml_Conditon(ml_conditionNot.value,ml_optionNot1.value,ml_optionNot2.value,0));
+		ml_conditionJson.innerHTML=JSON.stringify(ml_global.condition)
+	}
 	</script>
 </head>
 <body>
@@ -128,31 +184,33 @@
 </div>
 <div id="ml_conditionDiv">
 	<span>必须满足的相邻条件</span>
-	<select id="ml_condition" name="condition">
+	<select id="ml_conditionMust" name="conditionMust">
            <option>-请选择条件-</option>
            <option value="1">上</option>
            <option value="2">下</option>
            <option value="3">左</option>
-		   <option value="4">右</option>
+	   <option value="4">右</option>
     </select>
 	<span>学生1</span>
 	<div id="ml_must1"></div>
 	<span>学生2</span>
 	<div id="ml_must2"></div>
+	<button id="ml_setmust" onclick="ml_setmust_oc()">设置相邻条件</button>
 </div>
 <div id="ml_conditionDiv">
 	<span>必须满足的不相邻条件</span>
-	<select id="ml_condition" name="condition">
+	<select id="ml_conditionNot" name="conditionNot">
            <option>-请选择条件-</option>
            <option value="1">上</option>
            <option value="2">下</option>
            <option value="3">左</option>
-		   <option value="4">右</option>
+	   <option value="4">右</option>
     </select>
 	<span>学生1</span>
 	<div id="ml_not1"></div>
 	<span>学生2</span>
 	<div id="ml_not2"></div>
+	<button id="ml_setnot" onclick="ml_setnot_oc()">设置不相邻条件</button>
 </div>
 <div id="ml_seatsDiv">
 	<span>桌椅排列</span>
@@ -162,9 +220,17 @@
 	<input id="ml_row"/>
 	<button onclick="ml_set_oc()">设置</button>
 </div>
+<button onclick='(function ml_displayJson(){ml_json.style=""})()'>显示JSON数据</button>
+<button onclick='(function ml_displayJson(){ml_json.style="display:none"})()'>隐藏JSON数据</button>
+<div id="ml_json" style="display:none">
 <div id="ml_jsonDiv">
-	<span>json数据</span>
-	<div id="ml_json">[]</div>
+	<span>学生json数据</span>
+	<div id="ml_studentJson">[]</div>
+</div>
+<div id="ml_jsonDiv">
+	<span>条件json数据</span>
+	<div id="ml_conditionJson">{}</div>
+</div>
 </div>
 <table id="ml_data">
 </table>
