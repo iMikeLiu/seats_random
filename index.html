@@ -1,4 +1,5 @@
 <!DOCTYPE HTML>
+<meta encode="UTF-8">
 <html>
 <head>
 	<style>
@@ -55,13 +56,15 @@
         break; 
 		} 
 	} 
-	function Ml_Conditon(id,student1,student2,isNeighbor)
+	function Ml_Condition(id,student1,student2,isNeighbor,mode)
 	{
 		this.condition=["上","下","左","右"];
+		//["相邻","不相邻"]
 		this.conditionId=id;
 		this.student1=student1;
 		this.student2=student2;
 		this.isNeighbor=isNeighbor;
+		this.mode=mode;
 		return this;
 	}
 	var ml_global={};
@@ -157,7 +160,7 @@
 				return;
 			}
 		}
-		ml_global.condition.push(new Ml_Conditon(ml_conditionMust.value,ml_optionMust1.value,ml_optionMust2.value,1));
+		ml_global.condition.push(new Ml_Condition(ml_conditionMust.value,ml_optionMust1.value,ml_optionMust2.value,1));
 		ml_conditionJson.innerHTML=JSON.stringify(ml_global.condition)
 	}
 	function ml_setnot_oc()
@@ -180,7 +183,7 @@
 				return;
 			}
 		}
-		ml_global.condition.push(new Ml_Conditon(ml_conditionNot.value,ml_optionNot1.value,ml_optionNot2.value,0));
+		ml_global.condition.push(new Ml_Condition(ml_conditionNot.value,ml_optionNot1.value,ml_optionNot2.value,0));
 		ml_conditionJson.innerHTML=JSON.stringify(ml_global.condition)
 	}
 	function ml_importJSON_oc()
@@ -211,6 +214,10 @@
 			ml_global.seats[x][y]=ml_global.students[i];
 		}
 		document.getElementById("ml_data").innerHTML=ml_creatTable(ml_global.seats);
+	}
+	function ml_condGenerate_oc()
+	{
+		for(var i=0;i<ml_global.condition.
 	}
 	</script>
 	<title>位置安排系统</title>
