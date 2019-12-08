@@ -1,53 +1,3 @@
-<!DOCTYPE HTML>
-<meta encode="UTF-8">
-<html>
-<head>
-	<style>
-		#ml_main
-		{
-			text-align:center;
-		}
-		#ml_seatsDiv
-		{
-			text-align:center;
-		}
-		#ml_conditionDiv
-		{
-			text-align:center;
-		}
-		#ml_positionDiv
-		{
-			text-align:center;
-		}
-        table
-        {
-            border-collapse: collapse;
-            margin: 0 auto;
-            text-align: center;
-        }
-        table td, table th
-        {
-            border: 1px solid #cad9ea;
-            color: #666;
-            height: 30px;
-        }
-        table thead th
-        {
-            background-color: #CCE8EB;
-            width: 100px;
-        }
-        table tr:nth-child(odd)
-        {
-            background: #fff;
-        }
-        table tr:nth-child(even)
-        {
-            background: #F5FAFA;
-        }
-	</style>
-	<script src="index.js"></script>
-	<script>
-		/*
 	function ml_withDo(withArray,conditionFunction,doFunction)
 	{
 		for(var i=0;i<withArray.length;i++)
@@ -58,7 +8,9 @@
 			}
 		}
 	}
-	const must=1,not=0;
+	const must=1;
+	const not=0;
+	const pos=3;
 	function ml_randomNum(minNum,maxNum){ 
     switch(arguments.length){ 
         case 1: 
@@ -72,17 +24,20 @@
         break; 
 		} 
 	} 
-	const up=0,down=1,left=2,right=3;
-	function Ml_Condition(id,student1,student2,isNeighbor,mode)
+	const up=0;
+	const down=1;
+	const left=2;
+	const right=3;
+	function Ml_Condition(id,student1,student2,mode)
 	{
 		//["前","后","左","右"];
 		//["前","后","左","右"];
-		//["相邻","不相邻"]
+		//["相邻","不相邻","定位"];
 		this.conditionId=id;
 		this.student1=student1;
 		this.student2=student2;
-		this.isNeighbor=isNeighbor;
 		this.mode=mode;
+
 		return this;
 	}
 	
@@ -291,89 +246,7 @@
 			}
 		);
 	}
-	*/
-	</script>
-	<title>位置安排系统</title>
-</head>
-<body>
-<div id="ml_main">
-	<span>从姓名添加学生</span>
-	<input id="ml_fromName"/>
-	<button id="ml_addName" onclick="ml_addName_oc()">添加</button>
-	<br/>
-	<span>从JSON添加学生</span>
-	<textarea id="ml_fromJSON"></textarea>
-	<button id="ml_importJSON" onclick="ml_inputJSON_oc()">导入</button>
-	<br/>
-	<span>从JSON设置限制条件</span>
-	<textarea id="ml_conditionJSON"></textarea>
-	<button id="ml_importJSON" onclick="ml_importJSON_oc()">导入</button>
-	<br/>
-</div>
-<div id="ml_conditionDiv">
-	<span>必须满足的相邻条件</span>
-	<select id="ml_conditionMust" name="conditionMust">
-           <option>-请选择条件-</option>
-           <option value="1">前</option>
-           <option value="2">后</option>
-           <option value="3">左</option>
-	   <option value="4">右</option>
-    </select>
-	<span>学生1</span>
-	<div id="ml_must1"></div>
-	<span>学生2</span>
-	<div id="ml_must2"></div>
-	<button id="ml_setmust" onclick="ml_setmust_oc()">设置相邻条件</button>
-</div>
-<div id="ml_conditionDiv">
-	<span>必须满足的不相邻条件</span>
-	<select id="ml_conditionNot" name="conditionNot">
-           <option>-请选择条件-</option>
-           <option value="1">前</option>
-           <option value="2">后</option>
-           <option value="3">左</option>
-			<option value="4">右</option>
-    </select>
-	<span>学生1</span>
-	<div id="ml_not1"></div>
-	<span>学生2</span>
-	<div id="ml_not2"></div>
-	<button id="ml_setnot" onclick="ml_setnot_oc()">设置不相邻条件</button>
-</div>
-<div id="ml_positionDiv">
-	<span>必须满足的固定条件</span>
-	<span>学生</span>
-	<div id="ml_pos"></div>
-	<span>学生固定坐标</span>
-	<span>X坐标</span><input id="ml_positionX"/>
-	<span>Y坐标</span><input id="ml_positionY"/>
-	<button id="ml_setpos" onclick="ml_setpos_oc()">设置不相邻条件</button>
-</div>
-<div id="ml_seatsDiv">
-	<span>桌椅排列</span>
-    <span>行数</span>
-	<input id="ml_line"/>
-	<span>列数</span>
-	<input id="ml_row"/>
-	<button onclick="ml_set_oc()">设置</button>
-</div>
-<button id="displayJson" onclick='(function ml_displayJson_oc(){ml_json.style=""})()'>显示JSON数据</button>
-<button id="hideJson" onclick='(function ml_hideJson_oc(){ml_json.style="display:none"})()'>隐藏JSON数据</button>
-<div id="ml_json" style="display:none">
-	<div id="ml_jsonDiv">
-		<span>学生json数据</span>
-		<div id="ml_studentJson">[]</div>
-	</div>
-	<div id="ml_jsonDiv">
-		<span>条件json数据</span>
-		<div id="ml_conditionJson">{}</div>
-	</div>
-</div>
-<div id="ml_generate">
-	<button id="ml_buttonGenerate" onclick="ml_generate_oc()">随机生成</button>
-	<button id="ml_condGenerate" onclick="ml_condGenerate_oc()">按条件生成</button>
-</div>
-<table id="ml_data">
-</table>
-</body>
-</html>
+	function ml_setpos_oc()
+	{
+		
+	}
