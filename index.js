@@ -252,8 +252,8 @@
 		// 		}
 		// 	}
 		// );
-		for(var i=0;i<ml_global.students.length;i++)
-		ml_global.tableData[ml_positionX.value][ml_positionY.value]=;
+		// for(var i=0;i<ml_global.students.length;i++)
+		// ml_global.tableData[ml_positionX.value][ml_positionY.value]=;
 	}
 	function ml_setpos_oc()
 	{
