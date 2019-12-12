@@ -15,20 +15,26 @@
     switch(arguments.length){ 
         case 1: 
             return parseInt(Math.random()*minNum+1,10); 
-        break; 
         case 2: 
             return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
-        break; 
         default: 
             return 0; 
-        break; 
 		} 
 	} 
 	const up=0;
 	const down=1;
 	const left=2;
 	const right=3;
-	function Ml_Condition(id,student1,student2,mode)
+
+	function Ml_Position(x,y)
+	{
+		this.x=x;
+		this.y=y;
+		return this;
+		
+	}
+
+	function Ml_Condition(id,student1,student2,mode,x,y)
 	{
 		//["前","后","左","右"];
 		//["前","后","左","右"];
@@ -37,7 +43,8 @@
 		this.student1=student1;
 		this.student2=student2;
 		this.mode=mode;
-
+		this.position=Ml_Position(x,y);
+		
 		return this;
 	}
 	
@@ -237,14 +244,16 @@
 	}
 	function ml_condGenerate_oc()
 	{
-		ml_withDo(ml_global.condition,ml_isMust,function(obj){
-				var eptSeats=ml_searchAllEmpty();
-				if(obj.conditionId=up)
-				{
-					
-				}
-			}
-		);
+		// ml_withDo(ml_global.condition,ml_isMust,function(obj){
+		// 		var eptSeats=ml_searchAllEmpty();
+		// 		if(obj.conditionId=up)
+		// 		{
+		// 			for(var i=)
+		// 		}
+		// 	}
+		// );
+		for(var i=0;i<ml_global.students.length;i++)
+		ml_global.tableData[ml_positionX.value][ml_positionY.value]=;
 	}
 	function ml_setpos_oc()
 	{
