@@ -19,6 +19,10 @@
 		{
 			text-align:center;
 		}
+		#ml_deleteDiv
+		{
+			text-align:center;
+		}
         table
         {
             border-collapse: collapse;
@@ -46,253 +50,6 @@
         }
 	</style>
 	<script src="index.js"></script>
-	<script>
-		/*
-	function ml_withDo(withArray,conditionFunction,doFunction)
-	{
-		for(var i=0;i<withArray.length;i++)
-		{
-			if(conditionFunction(withArray[i]))
-			{
-				doFunction(withArray[i]);
-			}
-		}
-	}
-	const must=1,not=0;
-	function ml_randomNum(minNum,maxNum){ 
-    switch(arguments.length){ 
-        case 1: 
-            return parseInt(Math.random()*minNum+1,10); 
-        break; 
-        case 2: 
-            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
-        break; 
-        default: 
-            return 0; 
-        break; 
-		} 
-	} 
-	const up=0,down=1,left=2,right=3;
-	function Ml_Condition(id,student1,student2,isNeighbor,mode)
-	{
-		//["前","后","左","右"];
-		//["前","后","左","右"];
-		//["相邻","不相邻"]
-		this.conditionId=id;
-		this.student1=student1;
-		this.student2=student2;
-		this.isNeighbor=isNeighbor;
-		this.mode=mode;
-		return this;
-	}
-	
-	var ml_global={};
-	(function ml_init(){
-	ml_global.students=[];
-	ml_global.visited={};
-	ml_global.seats=[];
-	ml_global.row=0;
-	ml_global.line=0;
-	ml_global.condition=[];
-	})();
-	function ml_creatTable(data)
-	{
-		var tableData="";
-		for(var i=0;i<data.length;i++)
-		{
-			tableData+="<tr>";
-			for(var j=0;j<data[i].length;j++)
-				tableData+="<td>"+data[i][j]+"</td>";
-			tableData+="</tr>"
-		}
-		return tableData;
-	}
-	function ml_creatOption(data,id,name)
-	{
-		var tableData='<select id="'+id+'" name="'+name+'">';
-		for(var i=0;i<data.length;i++)
-		{
-			tableData+="<option value="+'"'+i+'"'+">";
-			tableData+=data[i];
-			tableData+="</option>";
-		}
-		tableData+="</select>";
-		return tableData;
-	}
-	function ml_update()
-	{
-		document.getElementById("ml_must1").innerHTML=ml_creatOption(ml_global.students,"ml_optionMust1","ml_mustFirst");
-		document.getElementById("ml_must2").innerHTML=ml_creatOption(ml_global.students,"ml_optionMust2","ml_mustSecond");
-		document.getElementById("ml_not1").innerHTML=ml_creatOption(ml_global.students,"ml_optionNot1","ml_notFirst");
-		document.getElementById("ml_not2").innerHTML=ml_creatOption(ml_global.students,"ml_optionNot2","ml_notFirst");
-	}
-	function ml_addName_oc()
-	{
-		ml_global.students.push(ml_fromName.value);
-		ml_studentJson.innerHTML=JSON.stringify(ml_global.students);
-		ml_update();
-	}
-	function ml_inputJSON_oc()
-	{
-		if(JSON.parse(ml_fromJSON.value) instanceof Array)
-		{
-			ml_global.students=JSON.parse(ml_fromJSON.value);
-			ml_studentJson.innerHTML=JSON.stringify(ml_global.students);
-			ml_update();
-		}
-		else
-		{
-			alert("非法的JSON格式！");
-		}
-	}
-	function ml_set_oc()
-	{
-		ml_global.row=document.getElementById("ml_row").value;
-		ml_global.line=document.getElementById("ml_line").value;
-		ml_global.seats=[];
-		for (var i=0;i<ml_global.line;i++)
-		{
-			ml_global.seats.push([]);
-			for (var j=0;j<ml_global.row;j++)
-			{
-				ml_global.seats[i].push("空位置");
-			}
-		}
-		document.getElementById("ml_data").innerHTML=ml_creatTable(ml_global.seats);
-	}
-	function ml_setmust_oc()
-	{
-		if(ml_conditionMust.value==="-请选择条件-")
-		{
-			alert("请选择条件！");
-			return;
-		}
-		if(ml_optionMust1.value===ml_optionMust2.value)
-		{
-			alert("条件不正确！");
-			return;
-		}
-		for(var i=0;i<ml_global.condition.length;i++)
-		{
-			if((ml_global.condition[i].student1===ml_optionMust1.value&&ml_global.condition[i].student2===ml_optionMust2.value)||(ml_global.condition[i].student2===ml_optionMust1.value&&ml_global.condition[i].student1===ml_optionMust2.value))
-			{
-				alert("已存在条件！");
-				return;
-			}
-		}
-		ml_global.condition.push(new Ml_Condition(ml_conditionMust.value,ml_optionMust1.value,ml_optionMust2.value,must));
-		ml_conditionJson.innerHTML=JSON.stringify(ml_global.condition)
-	}
-	function ml_setnot_oc()
-	{
-		if(ml_conditionNot.value==="-请选择条件-")
-		{
-			alert("请选择条件！");
-			return;
-		}
-		if(ml_optionNot1.value===ml_optionNot2.value)
-		{
-			alert("条件不正确！");
-			return;
-		}
-		for(var i=0;i<ml_global.condition.length;i++)
-		{
-			if((ml_global.condition[i].student1===ml_optionNot1.value&&ml_global.condition[i].student2===ml_optionNot2.value)||(ml_global.condition[i].student2===ml_optionNot1.value&&ml_global.condition[i].student1===ml_optionNot2.value))
-			{
-				alert("已存在条件！");
-				return;
-			}
-		}
-		ml_global.condition.push(new Ml_Condition(ml_conditionNot.value,ml_optionNot1.value,ml_optionNot2.value,not));
-		ml_conditionJson.innerHTML=JSON.stringify(ml_global.condition)
-	}
-	function ml_importJSON_oc()
-	{
-		if(JSON.parse(ml_conditionJSON.value) instanceof Array)
-		{
-			ml_global.condition=JSON.parse(ml_conditionJSON.value);
-			ml_conditionJson.innerHTML=JSON.stringify(ml_global.condition);
-			ml_update();
-		}
-		else
-		{
-			alert("非法的JSON格式！");
-		}
-	}
-	function ml_generatePosition(mode)
-	{
-		if(mode===-1)
-		{
-			var x=ml_randomNum(0,ml_global.line-1);
-			var y=ml_randomNum(0,ml_global.row-1);
-			while(!(ml_global.seats[x][y]==="空位置"))
-			{
-				x=ml_randomNum(0,ml_global.line-1);
-				y=ml_randomNum(0,ml_global.row-1);
-			}
-			return [x,y];
-		}
-	}
-	function ml_searchAllEmpty()
-	{
-	var emptySeats=[];
-	for(var i=0;i<ml_global.line;i++)
-		{
-			for(var j=0;j<ml_global.row;j++)
-			{
-				if(ml_global.seats[i][j]==="空位置")
-					{
-						emptySeats.push([i,j]);
-					}
-				
-			}
-		}
-		return emptySeats;
-	}
-	
-	function ml_generate_oc()
-	{
-		ml_set_oc();
-		for (var i=0;i<ml_global.students.length;i++)
-		{
-			var x=ml_randomNum(0,ml_global.line-1);
-			var y=ml_randomNum(0,ml_global.row-1);
-			while(!(ml_global.seats[x][y]==="空位置"))
-			{
-				x=ml_randomNum(0,ml_global.line-1);
-				y=ml_randomNum(0,ml_global.row-1);
-			}
-			ml_global.seats[x][y]=ml_global.students[i];
-		}
-		document.getElementById("ml_data").innerHTML=ml_creatTable(ml_global.seats);
-	}
-	function ml_isMust(obj)
-	{
-		if(obj.mode==must)
-		{
-			return true;
-		}
-	}
-	function ml_isNot(obj)
-	{
-		if(obj.mode==not)
-		{
-			return true;
-		}
-	}
-	function ml_condGenerate_oc()
-	{
-		ml_withDo(ml_global.condition,ml_isMust,function(obj){
-				var eptSeats=ml_searchAllEmpty();
-				if(obj.conditionId=up)
-				{
-					
-				}
-			}
-		);
-	}
-	*/
-	</script>
 	<title>位置安排系统</title>
 </head>
 <body>
@@ -347,7 +104,21 @@
 	<span>学生固定坐标</span>
 	<span>X坐标</span><input id="ml_positionX"/>
 	<span>Y坐标</span><input id="ml_positionY"/>
-	<button id="ml_setpos" onclick="ml_setpos_oc()">设置不相邻条件</button>
+	<button id="ml_setpos" onclick="ml_setpos_oc()">设置固定条件</button>
+</div>
+<div id="ml_deleteDiv">
+	<span>删除指定条件</span>
+	<span>对象</span>
+	<select onchange="ml_deleteSelect_oc()">
+		<option value="1">学生</option>
+		<option value="2">条件</option>
+		<option value="3">位置</option>
+	</select>
+	<span>索引</span>
+	<div id="ml_index"></div>
+	<span>数据</span>
+	<div id="ml_deleteData"></div>
+	<button id="ml_deleteButton" onclick="ml_deleteButton_oc()">删除</button>
 </div>
 <div id="ml_seatsDiv">
 	<span>桌椅排列</span>
@@ -357,16 +128,22 @@
 	<input id="ml_row"/>
 	<button onclick="ml_set_oc()">设置</button>
 </div>
+<!--
 <button id="displayJson" onclick='(function ml_displayJson_oc(){ml_json.style=""})()'>显示JSON数据</button>
 <button id="hideJson" onclick='(function ml_hideJson_oc(){ml_json.style="display:none"})()'>隐藏JSON数据</button>
-<div id="ml_json" style="display:none">
-	<div id="ml_jsonDiv">
+-->
+<div id="ml_json">
+	<div id="ml_jsonStudentDiv">
 		<span>学生json数据</span>
 		<div id="ml_studentJson">[]</div>
 	</div>
-	<div id="ml_jsonDiv">
+	<div id="ml_jsonConditionDiv">
 		<span>条件json数据</span>
 		<div id="ml_conditionJson">{}</div>
+	</div>
+		<div id="ml_jsonPositionDiv">
+		<span>位置json数据</span>
+		<div id="ml_positionJson">{}</div>
 	</div>
 </div>
 <div id="ml_generate">

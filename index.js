@@ -11,6 +11,12 @@
 	const must=1;
 	const not=0;
 	const pos=3;
+	
+	const up=0;
+	const down=1;
+	const left=2;
+	const right=3;
+	
 	function ml_randomNum(minNum,maxNum){ 
     switch(arguments.length){ 
         case 1: 
@@ -21,10 +27,7 @@
             return 0; 
 		} 
 	} 
-	const up=0;
-	const down=1;
-	const left=2;
-	const right=3;
+
 
 	function Ml_Position(x,y)
 	{
@@ -56,6 +59,7 @@
 	ml_global.row=0;
 	ml_global.line=0;
 	ml_global.condition=[];
+	ml_global.position={};
 	})();
 	function ml_creatTable(data)
 	{
@@ -87,6 +91,7 @@
 		document.getElementById("ml_must2").innerHTML=ml_creatOption(ml_global.students,"ml_optionMust2","ml_mustSecond");
 		document.getElementById("ml_not1").innerHTML=ml_creatOption(ml_global.students,"ml_optionNot1","ml_notFirst");
 		document.getElementById("ml_not2").innerHTML=ml_creatOption(ml_global.students,"ml_optionNot2","ml_notFirst");
+		document.getElementById("ml_pos").innerHTML=ml_creatOption(ml_global.students,"ml_optionPosition","ml_position");
 	}
 	function ml_addName_oc()
 	{
@@ -117,6 +122,7 @@
 			ml_global.seats.push([]);
 			for (var j=0;j<ml_global.row;j++)
 			{
+				if(ml_global.position[])
 				ml_global.seats[i].push("空位置");
 			}
 		}
@@ -257,5 +263,10 @@
 	}
 	function ml_setpos_oc()
 	{
-		
+		ml_global.position[ml_positionX.value,ml_positionY.value]=document.getElementById("ml_optionPosition").selectedIndex;
+		ml_positionJson.innerHTML=JSON.stringify(ml_global.position)
+	}
+	function ml_deleteSelect_oc()
+	{
+		if(document.getElementById("")
 	}
