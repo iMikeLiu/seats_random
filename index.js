@@ -264,9 +264,9 @@
 	function ml_setpos_oc()
 	{
 		ml_global.position[ml_positionX.value,ml_positionY.value]=document.getElementById("ml_optionPosition").selectedIndex;
-		ml_positionJson.innerHTML=JSON.stringify(ml_global.position)
+		ml_positionJson.innerHTML=JSON.stringify(ml_global.position);
 	}
 	function ml_deleteSelect_oc()
 	{
-		if(document.getElementById("")
+		//if(document.getElementById("")
 	}
