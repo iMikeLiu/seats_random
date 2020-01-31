@@ -1,4 +1,4 @@
-	function ml_withDo(withArray,conditionFunction,doFunction)
+function ml_withDo(withArray,conditionFunction,doFunction)
 	{
 		for(var i=0;i<withArray.length;i++)
 		{
