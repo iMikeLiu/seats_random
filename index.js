@@ -122,11 +122,11 @@ function ml_withDo(withArray,conditionFunction,doFunction)
 			ml_global.seats.push([]);
 			for (var j=0;j<ml_global.row;j++)
 			{
-				if(ml_global.position[])
+				
 				ml_global.seats[i].push("空位置");
 			}
 		}
-		document.getElementById("ml_data").innerHTML=ml_creatTable(ml_global.seats);
+		document.getElementById("ml_data").innerHTML=ml_creatTable(ml_global.seats);*/
 	}
 	function ml_setmust_oc()
 	{
